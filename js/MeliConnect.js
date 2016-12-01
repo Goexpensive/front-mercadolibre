@@ -13,7 +13,6 @@ function getParameterByName(name, url) {
 function apiCall(type, url, params = []) {
 	var accessToken = getParameterByName('access_token');
 	url += '/?access_token=' + accessToken;
-	console.log(url);
 	return $.ajax({
 		type: type,
 		contentType: "application/json",
@@ -36,7 +35,6 @@ function getListedItemIds(callback) {
 function getListedItems(callback) {
 	var items;
 	getListedItemIds(function (data) {
-		console.log(data.results);
 		ids = data.results.join();
 		params = {
 			ids: ids
