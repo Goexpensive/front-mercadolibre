@@ -25,7 +25,6 @@ function createItemList(data){
 function createTableVariation(data){
 	var item = data;
 	var variation = data.variations;
-	console.log(variation);
 	var heading = '<h2>' + item.id + ' ' + item.title + '</h2>';
 	var subHeading = '<h3> Variation </h3>';
 	var createButton = '<button type="button" class="create btn btn-success create pull-right">Crear</button>';
@@ -56,35 +55,27 @@ function createTableVariation(data){
 	});
 }
 
-function createForm(item){	
-	var heading = '<h2>' + item.id + ' ' + item.title + '</h2>';
-	var labelVariationId = '<label for="variationId">Id</label>';
-	var inputVariationId = '<input type="text" class="form-control" id="variationId">';
-	var labelVariationName = '<label for="variationName">Name</label>';
-	var inputVariationName = '<input type="text" class="form-control" id="variationName">';
-	var labelVariationValue = '<label for="variationValue">Variation Value</label>';
-	var inputVariationValue = '<input type="text" class="form-control" id="variationValue">';
-	var submit = '<button type="submit" class="btn btn-default">Submit</button>'; 		
-	var form = '<form>';
-	form += labelVariationId;
-	form += inputVariationId;
-	form += labelVariationName;
-	form += inputVariationName;
-	form += labelVariationValue;
-	form += inputVariationValue;
-	form += submit;
-	form += '</form>';
+function createForm(){	
 	$('.table').hide();
-	$('.form-item').append(heading);
-	$('.form-item').append(form);
-	$('.form-item button').bind('click', function() {
-		putVariation();
-	});
+	$('#variation-form').show();
+	
 }
 
 $(document).ready(function() { 
+	$('#variation-form').hide();
 	$('#publicaciones').bind('click', function() {
 		getListedItems(createItemList)
+	});
+
+	$('#variation-form').submit(function(event) {
+	    // get all the inputs into an array.
+	    event.preventDefault();
+	    var values = {};
+	    $.each($('#variation-form').serializeArray(), function(i, field) {
+    		values[field.name] = field.value;
+		});
+	    console.log(values);
+
 	});
 });
 

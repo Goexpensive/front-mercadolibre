@@ -30,6 +30,7 @@ function getListedItemIds(callback) {
 	}
 	itemsIds = apiCall('GET', 'users/229819204/items/search', params);
 	itemsIds.done(callback);
+	itemsIds.fail(function (data){console.log(data)});
 }
 
 function getListedItems(callback) {
@@ -41,11 +42,13 @@ function getListedItems(callback) {
 		}
 		items = apiCall('GET', 'items', params);
 		items.done(callback);
+		items.fail(function (data){console.log(data)});
 	})
 }
 
-function putVariation() {
+function putVariation(form) {
 	var item;
+	console.log(form);
 	var variation = [
 	        {
 	            "seller_custom_field" : "Blanco-1234",
