@@ -46,37 +46,35 @@ function getListedItems(callback) {
 	})
 }
 
-function putVariation(form) {
-	var item;
-	console.log(form);
-	var variation = [
-	        {
-	            "seller_custom_field" : "Blanco-1234",
+function putVariation(item, variation) {
+	var item = item;
+	var variation = variation;
+	var variation_name = variation['name'];
+	var size = (Object.keys(variation).length -1) / 2;
+	var jsonVariation = [];
+	for (var i = 1; i <= size; i++) {
+		var value = 'variationValue_' + i;
+		var qty = 'variationQty_' + i;
+		jsonVariation.push(
+			{
+				"seller_custom_field" : variation_name + ' - ' + variation[value],
 	            "price": 1000,
-	            "available_quantity": 3,
+	            "available_quantity": variation[qty],
 	            "attribute_combinations": [
 	                {
-	                    "name": "Cara de Papa",
-	                    "value_name": "Blanco"
+	                    "name": variation_name,
+	                    "value_name": variation[value]
 	                }
 	            ]
-	        },
-	        {
-	            "seller_custom_field" : "Negro-1234",
-	            "price": 1000,
-	            "available_quantity": 3,
-	            "attribute_combinations": [
-	                {
-	                    "name": "Cara de Papa",
-	                    "value_name": "Negro"
-	                }
-	            ]
-	        }
-    ];
-	var params = {
-		variations: variation
+			}
+		); 
 	}
-	item = apiCall('PUT', 'items/MLA644830340', JSON.stringify(params));
+	var params = {
+		variations: jsonVariation
+	}
+	console.log(jsonVariation);
+	console.log(item.id);
+	item = apiCall('PUT', 'items/' + item.id, JSON.stringify(params));
 	item.done(function (data){console.log(data)});
 	item.fail(function (data){console.log(data)});
 }

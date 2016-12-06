@@ -1,3 +1,5 @@
+var itemToModify = {};
+
 function createItemList(data){
 	var html = '<table class="table active-items"><tr><th>Imagen</th><th>Item Id</th><th>Titulo</th><th>Cantidad</th><th>Precio</th><th>Convertir</th></tr>';
 	var item = [];
@@ -55,10 +57,32 @@ function createTableVariation(data){
 	});
 }
 
-function createForm(){	
+function createForm(item){	
 	$('.table').hide();
 	$('#variation-form').show();
-	
+	itemToModify = item;
+}
+
+function addVariationInput(){
+	var inputs = ($('#variation-form :text').length -1) / 2;
+	var $last = $('#variation-form input:last');
+	var id = inputs + 1;
+	var value = '<label for="variationValue_' + id + '">' + id + '- Variation Value</label>';
+	value += '<input type="text" class="form-control" name="variationValue_' + id + '" id="variationValue_' + id + '">'; 					
+	var quantity = '<label for="variationQty_' + id + '">' + id + '- Variation Qty</label>';
+	quantity += '<input type="text" class="form-control" name="variationQty_' + id + '" id="variationQty_' + id + '">';		
+	$last.after(value + quantity);
+	console.log(inputs);
+	console.log($last);
+}
+
+function removeVariationInput(){
+	for (var i = 0; i < 2; i++) {
+		var $last = $('#variation-form input:last');
+		var $label = $('label[for="'+$last.attr('id')+'"]');
+		$last.remove();
+		$label.remove();
+	}
 }
 
 $(document).ready(function() { 
@@ -74,9 +98,12 @@ $(document).ready(function() {
 	    $.each($('#variation-form').serializeArray(), function(i, field) {
     		values[field.name] = field.value;
 		});
-	    console.log(values);
+		putVariation(itemToModify, values);
 
 	});
+
+	$('.adding-button').bind('click',addVariationInput);
+	$('.minus-button').bind('click',removeVariationInput);
 });
 
 
