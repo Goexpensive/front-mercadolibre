@@ -46,35 +46,45 @@ function getListedItems(callback) {
 	})
 }
 
-function putVariation(item, variation) {
+function getVariationPictures(pictures) {
+	var size = pictures.length;
+	var varitationPictures = [];
+	for (var i = 0; i < size; i++) {
+		varitationPictures.push(pictures[i].id);
+	}
+	return varitationPictures;
+}
+
+
+function putVariation(item, variation, callback) {
 	var item = item;
 	var variation = variation;
 	var variation_name = variation['name'];
 	var size = (Object.keys(variation).length -1) / 2;
 	var jsonVariation = [];
+	var varitationPictures = getVariationPictures(item.pictures);
 	for (var i = 1; i <= size; i++) {
 		var value = 'variationValue_' + i;
 		var qty = 'variationQty_' + i;
 		jsonVariation.push(
 			{
 				"seller_custom_field" : variation_name + ' - ' + variation[value],
-	            "price": 1000,
+	            "price": item.price,
 	            "available_quantity": variation[qty],
 	            "attribute_combinations": [
 	                {
 	                    "name": variation_name,
 	                    "value_name": variation[value]
 	                }
-	            ]
+	            ],
+	            "picture_ids": varitationPictures
 			}
 		); 
 	}
 	var params = {
 		variations: jsonVariation
 	}
-	console.log(jsonVariation);
-	console.log(item.id);
 	item = apiCall('PUT', 'items/' + item.id, JSON.stringify(params));
-	item.done(function (data){console.log(data)});
-	item.fail(function (data){console.log(data)});
+	item.done(function (data){callback(200, data)});
+	item.fail(function (data){callback(400, data)});
 }

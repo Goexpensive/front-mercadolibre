@@ -1,8 +1,9 @@
 var itemToModify = {};
 
 function createItemList(data){
-	var html = '<table class="table active-items"><tr><th>Imagen</th><th>Item Id</th><th>Titulo</th><th>Cantidad</th><th>Precio</th><th>Convertir</th></tr>';
 	var item = [];
+	var html = '<tr><th>Imagen</th><th>Item Id</th><th>Titulo</th><th>Cantidad</th><th>Precio</th><th>Convertir</th></tr>';
+	var $activeItems = $('.active-items');
 	for(var i = 0; i < data.length; i++){
 		pictureSrc = 'img/wrong.png'
 		if(data[i].pictures[0]){
@@ -17,8 +18,11 @@ function createItemList(data){
 		html += '<td><button class="btn btn-default variations" id=' + i +' type="submit">Variation</button></td>';
 		html += '</tr>'
 	}
-	html += '</table>';
-	$('.listing').append(html);
+	$activeItems.empty();
+	$activeItems.append(html);
+	$('.table-item').hide();
+	$('.form-item').hide();
+	$activeItems.show();
 	$('.variations').bind('click', function(){
 		createTableVariation(data[$(this).attr('id')]);
 	});
@@ -27,12 +31,7 @@ function createItemList(data){
 function createTableVariation(data){
 	var item = data;
 	var variation = data.variations;
-	var heading = '<h2>' + item.id + ' ' + item.title + '</h2>';
-	var subHeading = '<h3> Variation </h3>';
-	var createButton = '<button type="button" class="create btn btn-success create pull-right">Crear</button>';
-	var deleteButton = '<button type="button" class="delete btn btn-danger pull-right">Borrar</button>';
-	var editButton = '<a type="button" href="https://myaccount.mercadolibre.com.ar/listings/#label=active" class="edit btn btn-warning pull-right">Editar</a>';
-	var table = '<table class="table"><tr><th>Variation Id</th><th>Precio</th><th>Cantidad Disponible</th><th>Nombre</th><th>Valor</th><th>Convertir</th></tr>';
+	var table = '<tr><th>Variation Id</th><th>Precio</th><th>Cantidad Disponible</th><th>Nombre</th><th>Valor</th><th>Convertir</th></tr>';
 	for(var i = 0; i < variation.length; i++){
 		table += '<tr>';
 		table += '<td>' + variation[i].id + '</td>';
@@ -44,22 +43,21 @@ function createTableVariation(data){
 		table += '</tr>';
 
 	}
-	table += '</table>';
 	$('.active-items').hide();
-	$('.table-item').append(heading);
-	$('.table-item').append(subHeading);
-	$('.table-item').append(createButton);
-	$('.table-item').append(deleteButton);
-	$('.table-item').append(editButton);
-	$('.table-item').append(table);
+	$('.form-item').hide();
+	$('.table-item table').empty();
+	$('.table-item h2').text(item.id + ' ' + item.title);
+	$('.table-item table').append(table);
+	$('.table-item').show();
 	$('.table-item button.create').bind('click', function() {
 		createForm(item);
 	});
 }
 
 function createForm(item){	
-	$('.table').hide();
-	$('#variation-form').show();
+	$('.table-item').hide();
+	$('.form-item h2').text(item.id + ' ' + item.title);
+	$('.form-item').show();
 	itemToModify = item;
 }
 
@@ -85,8 +83,23 @@ function removeVariationInput(){
 	}
 }
 
+function showResult(status, data) {
+	if(status == 200) {
+		$('.form-item').hide();
+		$('#success-box').show();
+		console.log(data);
+	} else {
+		$('.form-item').hide();
+		$('#danger-box').show();
+		console.log(data);
+	}
+}
+
 $(document).ready(function() { 
-	$('#variation-form').hide();
+	$('.table-item').hide();
+	$('.form-item').hide();
+	$('#success-box').hide();
+	$('#danger-box').hide();
 	$('#publicaciones').bind('click', function() {
 		getListedItems(createItemList)
 	});
@@ -98,7 +111,9 @@ $(document).ready(function() {
 	    $.each($('#variation-form').serializeArray(), function(i, field) {
     		values[field.name] = field.value;
 		});
-		putVariation(itemToModify, values);
+		putVariation(itemToModify, values, showResult);
+		itemToModify = null;
+		$("form").trigger("reset");
 
 	});
 
