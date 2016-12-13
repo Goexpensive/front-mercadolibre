@@ -1,9 +1,3 @@
-/*!
- * Start Bootstrap - Business Frontpage HTML Template (http://startbootstrap.com)
- * Code licensed under the Apache License v2.0.
- * For details, see http://www.apache.org/licenses/LICENSE-2.0.
- */
-
 body {
     padding-top: 50px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
 }
@@ -40,6 +34,14 @@ body {
 
 /* Customize the text color and shadow color and to optimize text legibility. */
 
+.row {
+    margin: 2%;
+}
+
+
+
+
+/* Old Css */
 .tagline {
     text-shadow: 0 0 10px #000;
     color: #fff;

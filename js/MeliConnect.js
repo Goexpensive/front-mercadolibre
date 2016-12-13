@@ -46,6 +46,15 @@ function getListedItems(callback) {
 	})
 }
 
+function getItems(items, callback) {
+	params = {
+		ids: items
+	}
+	items = apiCall('GET', 'items', params);
+	items.done(callback);
+	items.fail(function (data){console.log(data)});
+}
+
 function getVariationPictures(pictures) {
 	var size = pictures.length;
 	var varitationPictures = [];

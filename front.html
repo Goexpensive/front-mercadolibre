@@ -29,23 +29,55 @@
 	 </header>
 	 <div class="container">
 	 	<div class="row">
- 			<a class="btn btn-primary" href="http://auth.mercadolibre.com.ar/authorization?response_type=token&client_id=6127276950442772">Conectarse con MercadoLibre</a>
-			<button class="btn btn-primary" id="publicaciones">Obtener Publicaciones</button>
+ 			<div class="col-lg-6">
+ 				<a class="btn btn-primary" href="http://auth.mercadolibre.com.ar/authorization?response_type=token&client_id=7773282816227117">Conectarse con MercadoLibre</a>
+				<button class="btn btn-primary" id="publicaciones">Obtener Publicaciones</button>
+			</div>	
+			<div class="col-lg-6">
+				<div class="input-group">
+					<span class="input-group-btn">
+						<button class="btn btn-default" id="search-items-button" type="button">Go!</button>
+					</span>
+					<input type="text" id="search-items-text" class="form-control" placeholder="Item(s) Id(s)...">
+				</div><!-- /input-group -->
+			</div>
 	 	</div>
 	 	<div class="row">
-	 		<div class="listing">
-	 			<table class="table active-items">
-	 			</table>
+	 		<div class="col-lg-12">
+		 		<div class="table-responsive listing">
+		 			<table class="table table-bordered active-items">
+		 				<thead>
+		 					<tr>
+		 						<th>Imagen</th>
+		 						<th>Item Id</th>
+		 						<th>Titulo</th>
+		 						<th>Cantidad</th>
+		 						<th>Precio</th>
+		 						<th>Ver</th>
+		 					</tr>
+		 				</thead>
+		 			</table>
+				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="table-item">
+			<div class="table-responsive table-item">
 				<h2></h2>
 				<h3> Variation </h3>
 				<button type="button" class="create btn btn-success create pull-right">Crear</button>
 				<button type="button" class="delete btn btn-danger pull-right">Borrar</button>
 				<button type="button" class="delete btn btn-warning pull-right">Editar</button>
 				<table class="table">
+						<thead>
+			 				<tr>
+			 					<th>Variation Id</th>
+			 					<th>Precio</th>
+			 					<th>Cantidad Disponible</th>
+			 					<th>Nombre</th>
+			 					<th>Valor</th>
+			 					<th>Ver</th>
+			 				</tr>
+			 			</thead>
 				</table>
 			</div>
 		</div>
