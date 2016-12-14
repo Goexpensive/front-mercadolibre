@@ -1,9 +1,11 @@
 var itemToModify = {};
+var offset = 0;
 
 function createItemList(data){
 	var item = [];
 	var html = '<tbody>';
-	var $activeItems = $('.active-items');
+	var $listing = $('.listing');
+	var $table = $listing.children('table');
 	for(var i = 0; i < data.length; i++){
 		pictureSrc = 'img/wrong.png'
 		if(data[i].pictures[0]){
@@ -19,11 +21,10 @@ function createItemList(data){
 		html += '</tr>'
 	}
 	html += '</tbody>';
-	$activeItems.children('tbody').remove();
-	$activeItems.append(html);
-	$('.table-item').hide();
-	$('.form-item').hide();
-	$activeItems.show();
+	$table.children('tbody').remove();
+	$table.append(html);
+	mainActions();
+	$listing.show();
 	$('.variations').bind('click', function(){
 		createTableVariation(data[$(this).attr('id')]);
 	});
@@ -35,25 +36,26 @@ function createTableVariation(data){
 	var table = '<tbody>';
 	for(var i = 0; i < variation.length; i++){
 		table += '<tr>';
-		table += '<td>' + variation[i].id + '</td>';
-		table += '<td>' + variation[i].price + '</td>';
-		table += '<td>' + variation[i].available_quantity + '</td>';
-		table += '<td>' + variation[i].attribute_combinations[0].name + '</td>';
-		table += '<td>' + variation[i].attribute_combinations[0].value_name + '</td>';
-		table += '<td>' + variation[i].id + '</td>';
+		table += '<td class="text-center">' + variation[i].id + '</td>';
+		table += '<td class="text-center">' + variation[i].price + '</td>';
+		table += '<td class="text-center">' + variation[i].available_quantity + '</td>';
+		table += '<td class="text-center">' + variation[i].attribute_combinations[0].name + '</td>';
+		table += '<td class="text-center">' + variation[i].attribute_combinations[0].value_name + '</td>';
 		table += '</tr>';
 
 	}
 	table += '</tbody>';
-	$('.active-items').hide();
-	$('.form-item').hide();
-	$('.table-item table').empty();
+	mainActions();
+	$('.table-item table').children('tbody').remove();
 	$('.table-item h2').text(item.id + ' ' + item.title);
 	$('.table-item table').append(table);
 	$('.table-item').show();
 	$('.table-item button.create').bind('click', function() {
 		createForm(item);
 	});
+	var link = 'https://vender.mercadolibre.com.ar/item/update?itemId=' + item.id;
+	$('.table-item a.edit').attr("href", link);
+	$('.table-item a.delete').attr("href", link);
 }
 
 function createForm(item){	
@@ -72,8 +74,6 @@ function addVariationInput(){
 	var quantity = '<label for="variationQty_' + id + '">' + id + '- Variation Qty</label>';
 	quantity += '<input type="text" class="form-control" name="variationQty_' + id + '" id="variationQty_' + id + '">';		
 	$last.after(value + quantity);
-	console.log(inputs);
-	console.log($last);
 }
 
 function removeVariationInput(){
@@ -88,8 +88,10 @@ function removeVariationInput(){
 function showResult(status, data) {
 	if(status == 200) {
 		$('.form-item').hide();
+		$('#success-box').children('p').children('a').attr("href", data.permalink);
 		$('#success-box').show();
-		console.log(data);
+
+		console.log(data.permalink);
 	} else {
 		$('.form-item').hide();
 		$('#danger-box').show();
@@ -97,14 +99,58 @@ function showResult(status, data) {
 	}
 }
 
-$(document).ready(function() { 
-	$('.active-items').hide();
+function submitForm(event, form, type) {
+	event.preventDefault();
+    var values = {};
+    console.log(form);
+    $.each(form.serializeArray(), function(i, field) {
+		values[field.name] = field.value;
+	});
+	if(type == 'put') {
+		putVariation(itemToModify, values, showResult);
+	}
+	if(type == 'post') {
+		postItem(values, showResult);
+	}
+	itemToModify = null;
+	$("form").trigger("reset");
+}
+
+function hideAll() {
+	$('.main-actions').hide();
+	$('.listing').hide();
 	$('.table-item').hide();
 	$('.form-item').hide();
+	$('.create-item').hide();
 	$('#success-box').hide();
 	$('#danger-box').hide();
+}
+
+function mainActions() {
+	$('.main-actions').show();
+	$('.listing').hide();
+	$('.table-item').hide();
+	$('.form-item').hide();
+	$('.create-item').hide();
+	$('#success-box').hide();
+	$('#danger-box').hide();
+}
+
+$(document).ready(function() {
+	hideAll();
+	var accessToken = getParameterByName('access_token');
+	if (accessToken) {
+		$('.intro').hide();
+		mainActions();
+
+	}
+	$('#new').bind('click', function() {
+		mainActions();
+		$('.create-item').show();
+	});
 	$('#publicaciones').bind('click', function() {
-		getListedItems(createItemList)
+		offset = 0;
+		getListedItems(offset, createItemList);
 	});
 	$('#search-items-button').bind('click', function() {
 		var items = $('#search-items-text').val();
@@ -112,20 +158,22 @@ $(document).ready(function() {
 			getItems(items, createItemList)
 		}
 	});
-
-	$('#variation-form').submit(function(event) {
-	    // get all the inputs into an array.
-	    event.preventDefault();
-	    var values = {};
-	    $.each($('#variation-form').serializeArray(), function(i, field) {
-    		values[field.name] = field.value;
-		});
-		putVariation(itemToModify, values, showResult);
-		itemToModify = null;
-		$("form").trigger("reset");
-
+	$('.next').bind('click',function() {
+		offset += 50;
+		getListedItems(offset, createItemList);
+		console.log(offset);
 	});
-
+	$('.previus').bind('click',function() {
+		offset -= 50;
+		console.log(offset);
+		getListedItems(offset, createItemList);
+	});
+	$('#variation-form').submit(function(event) {
+	    submitForm(event, $(this), 'put');
+	});
+	$('#new-item-form').submit(function(event) {
+	    submitForm(event, $(this), 'post');
+	});
 	$('.adding-button').bind('click',addVariationInput);
 	$('.minus-button').bind('click',removeVariationInput);
 });

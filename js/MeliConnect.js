@@ -22,27 +22,34 @@ function apiCall(type, url, params = []) {
 	});
 }
 
-function getListedItemIds(callback) {
+function getListedItemIds(offset, callback) {
 	var itemsIds;
 	params = {
 		orders: 'start_time_desc',
-		status: 'active'
+		status: 'active',
+		offset: offset
 	}
 	itemsIds = apiCall('GET', 'users/229819204/items/search', params);
 	itemsIds.done(callback);
 	itemsIds.fail(function (data){console.log(data)});
 }
 
-function getListedItems(callback) {
+function getListedItems(offset ,callback) {
 	var items;
-	getListedItemIds(function (data) {
+	getListedItemIds(offset, function (data) {
 		ids = data.results.join();
-		params = {
-			ids: ids
+		if (ids) {
+			ids = data.results.join();
+			params = {
+				ids: ids
+			}
+			items = apiCall('GET', 'items', params);
+			items.done(callback);
+			items.fail(function (data){console.log(data)});
+		} else {
+			console.log("No hay items");
+			callback('');
 		}
-		items = apiCall('GET', 'items', params);
-		items.done(callback);
-		items.fail(function (data){console.log(data)});
 	})
 }
 
@@ -96,4 +103,9 @@ function putVariation(item, variation, callback) {
 	item = apiCall('PUT', 'items/' + item.id, JSON.stringify(params));
 	item.done(function (data){callback(200, data)});
 	item.fail(function (data){callback(400, data)});
+}
+
+function postItem(values, callback) {
+	console.log(values);
+
 }
