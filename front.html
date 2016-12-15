@@ -32,22 +32,36 @@
         <header class="jumbotron hero-spacer intro">
             <h1>Bienvenido</h1>
             <p>Para comenzar, es necesario que le brindes permiso a nuestra aplicación para acceder a algunos datos de tu cuenta de MercadoLibre. El proceso te guiará pantalla a pantalla.</p>
-            <p><a href="http://auth.mercadolibre.com.ar/authorization?response_type=token&client_id=7773282816227117" class="btn btn-primary btn-large">Vincular</a>
+            <p><a href="http://auth.mercadolibre.com.ar/authorization?response_type=token&client_id=6127276950442772" class="btn btn-primary btn-large">Vincular</a>
             </p>
         </header>
 	 	<div class="row main-actions">
- 			<div class="col-lg-6">
- 				<a class="btn btn-primary" href="http://auth.mercadolibre.com.ar/authorization?response_type=token&client_id=7773282816227117">Conectarse con MercadoLibre</a>
+ 			<div class="col-lg-8">
+ 				<a class="btn btn-primary" href="http://auth.mercadolibre.com.ar/authorization?response_type=token&client_id=6127276950442772">Conectarse con MercadoLibre</a>
 				<button class="btn btn-primary" id="publicaciones">Obtener Publicaciones</button>
 				<button class="btn btn-primary" id="new">Crear Publicacion</button>
 			</div>	
-			<div class="col-lg-6">
+			<div class="col-lg-4">
 				<div class="input-group">
 					<span class="input-group-btn">
 						<button class="btn btn-default" id="search-items-button" type="button">Go!</button>
 					</span>
 					<input type="text" id="search-items-text" class="form-control" placeholder="Item(s) Id(s)...">
 				</div><!-- /input-group -->
+			</div>
+	 	</div>
+	 	<div class="row">
+	 		<div id="success-box" class="alert alert-success alert-dismissible">
+				<a href="#" class="close" data-hide="alert" aria-label="close">&times;</a>
+  				<strong>Excelente!</strong> Creaeste la variación con exito.
+  				<p> Mira tu publicación en <a href="">Mercado Libre </a></p>.
+  				<button type="button" class="back-to-listing btn pull-right">Volver a publicaciones</button>
+			</div>
+			<div id="danger-box" class="alert alert-danger alert-dismissible">
+  				<a href="#" class="close" data-hide="alert" aria-label="close">&times;</a>
+  				<strong>Ups!</strong> Algo salio mal.
+  				<p> Volve a intentarlo en algunos minutos</p>.
+  				<button type="button" class="back-to-listing btn pull-right">Volver a publicaciones</button>
 			</div>
 	 	</div>
 	 	<div class="row">
@@ -92,6 +106,7 @@
 			 				</tr>
 			 			</thead>
 				</table>
+				<button type="button" class="back-to-listing btn pull-right">Volver a publicaciones</button>
 			</div>
 		</div>
 		<div class="row">
@@ -116,16 +131,6 @@
 					</button>
 					<button type="submit" class="btn btn-default">Submit</button>
 				</form>
-			</div>
-			<div id="success-box" class="alert alert-success alert-dismissible">
-				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  				<strong>Excelente!</strong> Creaeste la variación con exito.
-  				<p> Mira tu publicación en <a href="">Mercado Libre </a></p>.
-			</div>
-			<div id="danger-box" class="alert alert-danger alert-dismissible">
-  				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  				<strong>Ups!</strong> Algo salio mal.
-  				<p> Volve a intentarlo en algunos minutos</p>.
 			</div>
 		</div>
 		<div class="row">

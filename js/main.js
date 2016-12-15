@@ -137,7 +137,12 @@ function mainActions() {
 }
 
 $(document).ready(function() {
+
+    $("[data-hide]").on("click", function(){
+        $(this).closest("." + $(this).attr("data-hide")).hide();
+    });
 	hideAll();
+	
 	var accessToken = getParameterByName('access_token');
 	if (accessToken) {
 		$('.intro').hide();
@@ -167,6 +172,10 @@ $(document).ready(function() {
 		offset -= 50;
 		console.log(offset);
 		getListedItems(offset, createItemList);
+	});
+	$('.back-to-listing').bind('click',function() {
+		mainActions();
+		$('.listing').show();
 	});
 	$('#variation-form').submit(function(event) {
 	    submitForm(event, $(this), 'put');
