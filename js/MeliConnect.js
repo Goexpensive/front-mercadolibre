@@ -29,7 +29,7 @@ function getListedItemIds(offset, callback) {
 		status: 'active',
 		offset: offset
 	}
-	itemsIds = apiCall('GET', 'users/229819204/items/search', params);
+	itemsIds = apiCall('GET', 'users/172753273/items/search', params);
 	itemsIds.done(callback);
 	itemsIds.fail(function (data){console.log(data)});
 }
