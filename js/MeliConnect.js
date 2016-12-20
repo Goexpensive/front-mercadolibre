@@ -97,15 +97,50 @@ function putVariation(item, variation, callback) {
 			}
 		); 
 	}
+	console.log(jsonVariation);
 	var params = {
 		variations: jsonVariation
 	}
 	item = apiCall('PUT', 'items/' + item.id, JSON.stringify(params));
-	item.done(function (data){callback(200, data)});
-	item.fail(function (data){callback(400, data)});
+	item.done(function (data){callback(200, data, '.listing')});
+	item.fail(function (data){callback(400, data, '.listing')});
 }
 
 function postItem(values, callback) {
-	console.log(values);
-
+	var size = (Object.keys(values).length -5) / 2;
+	item = {
+   		title: values.title,
+   		category_id:"MLA391860",
+   		price: values.price,
+   		currency_id:"ARS",
+   		buying_mode:"buy_it_now",
+   		listing_type_id:"bronze",
+   		condition:"new",
+   		description: values.description,
+	   	variations:[]
+	}
+	for (var i = 1; i <= size; i++) {
+		var value = 'variationValue_' + i;
+		var qty = 'variationQty_' + i;
+		item.variations.push(
+			{
+				"seller_custom_field" : values.name + ' - ' + values[value],
+	            "price": item.price,
+	            "available_quantity": values[qty],
+	            "attribute_combinations": [
+	                {
+	                    "name": values.name,
+	                    "value_name": values[value]
+	                }
+	            ],
+	            picture_ids:[
+		          "https://s-media-cache-ak0.pinimg.com/736x/63/9c/a0/639ca03b5ca79e73002b4f2d4776d03b.jpg"
+		      	]
+			}
+		); 
+	}
+	var params = item;
+	item = apiCall('POST', 'items', JSON.stringify(params));
+	item.done(function (data){callback(200, data, '.create-item')});
+	item.fail(function (data){callback(400, data, '.create-item')});
 }

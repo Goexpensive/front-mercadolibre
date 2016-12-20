@@ -3,26 +3,25 @@ var offset = 0;
 
 function createItemList(data){
 	var item = [];
-	var html = '<tbody>';
+	var html = '';
 	var $listing = $('.listing');
-	var $table = $listing.children('table');
+	var $rowHeader = $('.listing .row.details');
 	for(var i = 0; i < data.length; i++){
 		pictureSrc = 'img/wrong.png'
 		if(data[i].pictures[0]){
 			pictureSrc = data[i].pictures[0].url
 		}
-		html += '<tr>';
-		html += '<td> <img height="40" width="40" src="' + pictureSrc + '"></td>';
-		html += '<td>' + data[i].id + '</td>';
-		html += '<td>' + data[i].title + '</td>';
-		html += '<td>' + data[i].available_quantity + '</td>';
-		html += '<td>' + data[i].price + '</td>';
-		html += '<td><button class="btn btn-default variations" id=' + i +' type="submit">Variation</button></td>';
-		html += '</tr>'
+		html += '<div class="row details">';
+		html += '<div class="col-xs-2 image"><img alt="Bootstrap Image Preview" src="' + pictureSrc + '" class="img-circle publication-img"></div>';
+		html += '<div class="col-md-3 hidden-xs hidden-smpublication"><a href="' + data[i].permalink + '">' + data[i].id + '</a></div>';
+		html += '<div class="col-xs-5 col-md-3 title">' + data[i].title + '</div>';
+		html += '<div class="col-md-1 hidden-xs hidden-sm stock">' + data[i].available_quantity + '</div>';
+		html +=	'<div class="col-md-1 hidden-xs hidden-sm price">'+ data[i].price + '</div>';
+		html += '<div class="col-xs-2 col-md-2"><button class="btn btn-default variations" id=' + i +' type="submit">Ver variaciones</button></div>';
+		html += '</div>'
 	}
-	html += '</tbody>';
-	$table.children('tbody').remove();
-	$table.append(html);
+	$rowHeader.remove();
+	$listing.append(html);
 	mainActions();
 	$listing.show();
 	$('.variations').bind('click', function(){
@@ -33,29 +32,29 @@ function createItemList(data){
 function createTableVariation(data){
 	var item = data;
 	var variation = data.variations;
-	var table = '<tbody>';
-	for(var i = 0; i < variation.length; i++){
-		table += '<tr>';
-		table += '<td class="text-center">' + variation[i].id + '</td>';
-		table += '<td class="text-center">' + variation[i].price + '</td>';
-		table += '<td class="text-center">' + variation[i].available_quantity + '</td>';
-		table += '<td class="text-center">' + variation[i].attribute_combinations[0].name + '</td>';
-		table += '<td class="text-center">' + variation[i].attribute_combinations[0].value_name + '</td>';
-		table += '</tr>';
-
-	}
-	table += '</tbody>';
+	var $tableItem = $('.table-item');
+	var $rowHeader = $('.table-item .row.details');
+	var html = '';
+	if (variation[0]) {
+		html += '<div class="row details">';
+		html += '<div class="col-xs-2 title">' + variation[0].attribute_combinations[0].name + '</div>';
+		html += '<div class="col-xs-2 price">' + variation[0].price + '</div>';
+		html += '<div class="col-xs-8 variations"><ul>';
+		for(var i = 0; i < variation.length; i++){
+			html += '<li>' + variation[i].attribute_combinations[0].value_name + '</li>';
+		}
+		html += '</ul></div></div>';
+	};
 	mainActions();
-	$('.table-item table').children('tbody').remove();
-	$('.table-item h2').text(item.id + ' ' + item.title);
-	$('.table-item table').append(table);
-	$('.table-item').show();
-	$('.table-item button.create').bind('click', function() {
+	$rowHeader.remove();
+	$tableItem.find('h1').html('<span class="hidden-xs">Variaciones de </span>#' + item.id);
+	$tableItem.append(html);
+	$tableItem.show();
+	$tableItem.find('button.create').bind('click', function() {
 		createForm(item);
 	});
 	var link = 'https://vender.mercadolibre.com.ar/item/update?itemId=' + item.id;
-	$('.table-item a.edit').attr("href", link);
-	$('.table-item a.delete').attr("href", link);
+	$tableItem.find('a.edit').attr("href", link);
 }
 
 function createForm(item){	
@@ -65,9 +64,15 @@ function createForm(item){
 	itemToModify = item;
 }
 
-function addVariationInput(){
-	var inputs = ($('#variation-form :text').length -1) / 2;
-	var $last = $('#variation-form input:last');
+function addVariationInput(button){
+	var id = button.parent().attr('id');
+	if (id == 'variation-form') {
+		otherInputs = 1;
+	} else {
+		otherInputs = 4;
+	}
+	var inputs = ($('#' + id +' :text').length - otherInputs) / 2;
+	var $last = $('#' + id +' input:last');
 	var id = inputs + 1;
 	var value = '<label for="variationValue_' + id + '">' + id + '- Variation Value</label>';
 	value += '<input type="text" class="form-control" name="variationValue_' + id + '" id="variationValue_' + id + '">'; 					
@@ -76,10 +81,11 @@ function addVariationInput(){
 	$last.after(value + quantity);
 }
 
-function removeVariationInput(){
+function removeVariationInput(button){
+	var id = button.parent().attr('id');
 	for (var i = 0; i < 2; i++) {
-		var $last = $('#variation-form input:last');
-		var $label = $('label[for="'+$last.attr('id')+'"]');
+		var $last = $('#' + id +' input:last');
+		var $label = $('#' + id).find('label[for="'+$last.attr('id')+'"]');
 		$last.remove();
 		$label.remove();
 	}
@@ -87,13 +93,11 @@ function removeVariationInput(){
 
 function showResult(status, data) {
 	if(status == 200) {
-		$('.form-item').hide();
+		mainActions();
 		$('#success-box').children('p').children('a').attr("href", data.permalink);
 		$('#success-box').show();
-
-		console.log(data.permalink);
 	} else {
-		$('.form-item').hide();
+		mainActions();
 		$('#danger-box').show();
 		console.log(data);
 	}
@@ -102,7 +106,6 @@ function showResult(status, data) {
 function submitForm(event, form, type) {
 	event.preventDefault();
     var values = {};
-    console.log(form);
     $.each(form.serializeArray(), function(i, field) {
 		values[field.name] = field.value;
 	});
@@ -137,17 +140,21 @@ function mainActions() {
 }
 
 $(document).ready(function() {
-
     $("[data-hide]").on("click", function(){
         $(this).closest("." + $(this).attr("data-hide")).hide();
     });
+    $('.back').bind('click',function() {
+		mainActions();
+		$('.listing').show();
+	});
 	hideAll();
 	
 	var accessToken = getParameterByName('access_token');
 	if (accessToken) {
 		$('.intro').hide();
 		mainActions();
-
+		offset = 0;
+		getListedItems(offset, createItemList);
 	}
 	$('#new').bind('click', function() {
 		mainActions();
@@ -165,17 +172,21 @@ $(document).ready(function() {
 	});
 	$('.next').bind('click',function() {
 		offset += 50;
+		if (offset >= 50) {
+			$('.previous').removeClass('disabled');
+		};
 		getListedItems(offset, createItemList);
 		console.log(offset);
 	});
-	$('.previus').bind('click',function() {
-		offset -= 50;
-		console.log(offset);
+	$('.previous').bind('click',function() {
+		if (offset) {
+			offset -= 50;
+		}
+		if (offset < 50) {
+			$(this).addClass('disabled');
+		};
 		getListedItems(offset, createItemList);
-	});
-	$('.back-to-listing').bind('click',function() {
-		mainActions();
-		$('.listing').show();
+		console.log(offset);
 	});
 	$('#variation-form').submit(function(event) {
 	    submitForm(event, $(this), 'put');
@@ -183,8 +194,12 @@ $(document).ready(function() {
 	$('#new-item-form').submit(function(event) {
 	    submitForm(event, $(this), 'post');
 	});
-	$('.adding-button').bind('click',addVariationInput);
-	$('.minus-button').bind('click',removeVariationInput);
+	$('.adding-button').bind('click', function() {
+		addVariationInput($(this));
+	});
+	$('.minus-button').bind('click', function() {
+		removeVariationInput($(this));
+	});
 });
 
 

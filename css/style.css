@@ -1,8 +1,86 @@
-body {
-    padding-top: 50px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+.row.header {
+  text-transform: uppercase;
+  color: #fff;
+  background-color: #e6a248;
+  border-top: solid 2px #e6a248;
 }
 
-/* Header Image Background - Change the URL below to your image path (example: ../images/background.jpg) */
+/*.row.header > .div {
+  padding-top: 0;
+  padding-bottom: 0;
+  font-size: 0.85em;
+}*/
+
+.row.details {
+  padding: 2px 0;
+  line-height: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  border-bottom: solid 1px #e6a248;
+}
+
+.row.details.elastic {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  vertical-align: center;
+}
+
+/*.row.details.elastic div[class^="col-"] {
+  display: table-cell;
+  float: none;
+}*/
+
+.page-header {
+  margin-top: 0;
+}
+
+.page-header h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 100px;
+}
+
+.page-header .button-bar {
+    line-height: 100px;
+    text-align: right;
+}
+
+/*.row .details::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20%;
+  height: 100%;
+  background-image: linear-gradient(to right, rgba(#fff, 0) 0%, #fff 100%);
+  pointer-events: none;
+}*/
+
+.image, .price, .stock, .actions {
+  text-align: center;
+}
+
+.publication-img {
+  text-align: center;
+  width: 50px;
+}
+
+.variations>ul>li {
+  line-height: 1.5em;
+}
+
+.alert {
+    margin: 3%;
+}
+
+
+
+
+
+
+/*
+
 
 .tagline {
     text-shadow: 0 0 10px #000;
@@ -42,7 +120,7 @@ body {
 }
 
 
-/* Customize the text color and shadow color and to optimize text legibility. */
+
 
 .row {
     margin: 2%;
@@ -54,14 +132,14 @@ body {
 
 
 
-/*Object generic*/
+
 
 .icon-delete {
     color: #8B0000;
     font-size: 24px; 
 }
 
-
+*/
 
 
 
