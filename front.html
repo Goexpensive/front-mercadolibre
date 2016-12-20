@@ -31,7 +31,7 @@
 						Para comenzar, es necesario que le brindes permiso a nuestra aplicación para acceder a algunos datos de tu cuenta de MercadoLibre. El proceso te guiará pantalla a pantalla.
 					</p>
 					<p>
-						<a href="http://auth.mercadolibre.com.ar/authorization?response_type=token&client_id=6127276950442772" class="btn btn-primary btn-large">Vincular</a>
+						<a href="http://auth.mercadolibre.com.ar/authorization?response_type=token&client_id=7773282816227117" class="btn btn-primary btn-large">Vincular</a>
 					</p>
 				</div>
 			</div>
@@ -39,11 +39,15 @@
 			</div>
 		</div>
 	 	<div class="row main-actions">
- 			<div class="col-lg-8">
- 				<a class="btn btn-primary" href="http://auth.mercadolibre.com.ar/authorization?response_type=token&client_id=6127276950442772">Conectarse con MercadoLibre</a>
-				<button class="btn btn-primary" id="publicaciones">Obtener Publicaciones</button>
-			</div>	
-			<div class="col-lg-4">
+	 		<div class="col-xs-3 col-md-3 button-bar">
+ 				<a class="btn btn-default" type="button" href="http://auth.mercadolibre.com.ar/authorization?response_type=token&client_id=7773282816227117"><em class="glyphicon glyphicon-link"></em></a>
+				<button id="publicaciones" class="btn btn-default">
+					<em class="glyphicon glyphicon-refresh"></em><span class="hidden-xs"> Actualizar</span>
+				</button>
+			</div>
+			<div class="col-xs-4 col-md-4 button-bar">
+			</div>
+			<div class="col-xs-5 col-md-5">
 				<div class="input-group">
 					<span class="input-group-btn">
 						<button class="btn btn-default" id="search-items-button" type="button">Go!</button>
@@ -209,6 +213,9 @@
 						</button>
 						<button type="submit" class="btn btn-default">Submit</button>
 					</form>
+					<div class="pull-right">
+						<a class="back" style="text-align: center;">Volver</a>
+					</div>
 				</div>
 				<div class="col-md-2">
 				</div>

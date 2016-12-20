@@ -113,7 +113,7 @@ function submitForm(event, form, type) {
 		putVariation(itemToModify, values, showResult);
 	}
 	if(type == 'post') {
-		postItem(values, showResult);
+		newItem(values, showResult);
 	}
 	itemToModify = null;
 	$("form").trigger("reset");

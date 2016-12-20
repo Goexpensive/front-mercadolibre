@@ -5,12 +5,6 @@
   border-top: solid 2px #e6a248;
 }
 
-/*.row.header > .div {
-  padding-top: 0;
-  padding-bottom: 0;
-  font-size: 0.85em;
-}*/
-
 .row.details {
   padding: 2px 0;
   line-height: 50px;
@@ -26,11 +20,6 @@
   vertical-align: center;
 }
 
-/*.row.details.elastic div[class^="col-"] {
-  display: table-cell;
-  float: none;
-}*/
-
 .page-header {
   margin-top: 0;
 }
@@ -45,17 +34,6 @@
     line-height: 100px;
     text-align: right;
 }
-
-/*.row .details::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 20%;
-  height: 100%;
-  background-image: linear-gradient(to right, rgba(#fff, 0) 0%, #fff 100%);
-  pointer-events: none;
-}*/
 
 .image, .price, .stock, .actions {
   text-align: center;
@@ -73,73 +51,3 @@
 .alert {
     margin: 3%;
 }
-
-
-
-
-
-
-/*
-
-
-.tagline {
-    text-shadow: 0 0 10px #000;
-    color: #fff;
-    text-align: center;
-}
-
-.img-center {
-    margin: 0 auto;
-}
-
-.navbar{
-    background-color: #fff;
-    background: url('../img/logo.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 170px;
-    height: 51px;
-    outline: none;
-}
-.nav-logo {
-    background: url('../img/logo.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 170px;
-    outline: none;
-}
-
-
-.business-header {
-    height: 200px;
-    background: url('../img/home.png') center center no-repeat scroll;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    -o-background-size: cover;
-}
-
-
-
-
-.row {
-    margin: 2%;
-}
-
-.hero-spacer {
-    margin-top: 50px;
-}
-
-
-
-
-
-.icon-delete {
-    color: #8B0000;
-    font-size: 24px; 
-}
-
-*/
-
-
-

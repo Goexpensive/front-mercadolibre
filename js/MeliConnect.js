@@ -23,13 +23,22 @@ function apiCall(type, url, params = []) {
 }
 
 function getListedItemIds(offset, callback) {
+	var user = apiCall('GET', 'users/me');
+	user.done(function (data){
+		var user_id = data.id;
+		getItemIds(offset, user_id, callback)
+	});
+	user.fail(function (data){console.log(data)});
+}
+
+function getItemIds(offset, user_id, callback) {
 	var itemsIds;
 	params = {
 		orders: 'start_time_desc',
 		status: 'active',
 		offset: offset
 	}
-	itemsIds = apiCall('GET', 'users/229819204/items/search', params);
+	itemsIds = apiCall('GET', 'users/' + user_id +'/items/search', params);
 	itemsIds.done(callback);
 	itemsIds.fail(function (data){console.log(data)});
 }
@@ -108,9 +117,10 @@ function putVariation(item, variation, callback) {
 
 function postItem(values, callback) {
 	var size = (Object.keys(values).length -5) / 2;
+	console.log(values.category_id);
 	item = {
    		title: values.title,
-   		category_id:"MLA391860",
+   		category_id: values.category_id,
    		price: values.price,
    		currency_id:"ARS",
    		buying_mode:"buy_it_now",
@@ -143,5 +153,14 @@ function postItem(values, callback) {
 	item = apiCall('POST', 'items', JSON.stringify(params));
 	item.done(function (data){callback(200, data, '.create-item')});
 	item.fail(function (data){callback(400, data, '.create-item')});
+}
+
+function newItem(values, callback) {
+	items = apiCall('GET', 'sites/MLA/category_predictor/predict?title=' + values.title);
+	items.done(function (data){
+		values.category_id = data.id;
+		postItem(values, callback);
+	});
+	items.fail(function (data){callback(400, data, '.create-item')});
 }
 
